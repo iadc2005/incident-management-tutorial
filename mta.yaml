@@ -9,6 +9,7 @@ modules:
   requires:
   - name: incident-management-db
   - name: incident-management-auth
+  - name: incident-management-destination-service
   provides:
   - name: srv-api
     properties:
@@ -81,6 +82,13 @@ modules:
     - npm run build:cf
     supported-platforms: []
 resources:
+- name: incidents-api-access
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./bupa.json
+    service: s4-hana-cloud
+    service-plan: api-access
+    system-name: O5P
 - name: incident-management-db
   type: com.sap.xs.hdi-container
   parameters:
