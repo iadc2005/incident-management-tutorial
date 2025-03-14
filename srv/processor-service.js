@@ -1,5 +1,5 @@
 const cds = require('@sap/cds')
-
+const LOG = cds.log('processor-service');
 class ProcessorService extends cds.ApplicationService {
     /** Registering custom event handlers */
     async init() {
@@ -88,8 +88,11 @@ class ProcessorService extends cds.ApplicationService {
       /** Custom Validation */
       async onUpdate (req) {
         const { status_code } = await SELECT.one(req.subject, i => i.status_code).where({ID: req.data.ID})
-        if (status_code === 'C')
+        if (status_code === 'C'){
+          LOG.info(`Incident ${req.data.ID} has already been closed`);
           return req.reject(`Can't modify a closed incident`)
+        }
+          
       }
     }
     module.exports = { ProcessorService }
